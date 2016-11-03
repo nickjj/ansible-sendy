@@ -55,8 +55,8 @@ sendy_destination_path: '/srv/sendy'
 # Should geoip.inc be patched to work for nginx?
 sendy_copy_patched_geoip_for_nginx: True
 
-# Which service should restart configuring sendy?
-sendy_restart_fpm_service_name: 'php7.0-fpm'
+# Which service should restart after configuring Sendy?
+sendy_restart_service_name: 'php7.0-fpm'
 
 # These are the recommended cron values by Sendy, the first one is every
 # 5 minutes while the second one is every 1 minute.
