@@ -105,6 +105,8 @@ then making it look like this:
 ```
 ---
 
+mariadb_mysqld_root_password: 'pleasepickastrongerpassword'
+
 sendy_install_url: 'https://list.example.com'
 sendy_db_pass: 'pleasepickastrongerpassword'
 sendy_source_path: '~/path/to/your/copy/of/sendy'
