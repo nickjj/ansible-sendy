@@ -33,8 +33,8 @@ Below is a list of default values along with a description of what they do.
 #   sendy_install_url: 'https://list.example.com'
 sendy_install_url: ''
 
-# Should Sendy create a mysql user?
-sendy_db_setup_user: True
+# Should Sendy create a mysql database and user?
+sendy_db_setup: True
 
 # mysql configuration settings.
 sendy_db_name: 'sendy'
@@ -104,6 +104,8 @@ then making it look like this:
 
 ```
 ---
+
+mariadb_mysqld_root_password: 'pleasepickastrongerpassword'
 
 sendy_install_url: 'https://list.example.com'
 sendy_db_pass: 'pleasepickastrongerpassword'

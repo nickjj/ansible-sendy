@@ -4,7 +4,7 @@
   mysql_db:
     name: '{{ sendy_db_name }}'
     state: 'present'
-  when: sendy_db_setup_user
+  when: sendy_db_setup
 
 - name: Create database user and permissions
   mysql_user:
@@ -13,7 +13,7 @@
     priv: '{{ sendy_db_permissions }}'
     host: '{{ sendy_db_host }}'
     state: 'present'
-  when: sendy_db_setup_user
+  when: sendy_db_setup
 
 - name: Ensure destination path exists
   file:

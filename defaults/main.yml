@@ -2,7 +2,7 @@
 
 sendy_install_url: ''
 
-sendy_db_setup_user: True
+sendy_db_setup: True
 sendy_db_name: 'sendy'
 sendy_db_host: 'localhost'
 sendy_db_port: 3306
