@@ -16,7 +16,7 @@ list without having to pay obnoxious monthly fees.
 
 This role will take care of:
 
-- Create a mysql database and user (use [MariaDB role](https://github.com/nickjj/ansible-mariadb) for DB installation)
+- Create a mysql database and user (use this [MariaDB role](https://github.com/nickjj/ansible-mariadb) for DB installation)
 - Copy your local instance of Sendy to a location of your choosing
 - Set up permissions as expected for the `uploads/` directory
 - Patch `geoip.inc` so you can track e-mails with nginx without getting error 500s
@@ -73,7 +73,9 @@ sendy_force_sync: False
 
 Let's say you want to set up [Sendy](http://sendy.co/?ref=6L8Qf) to work. Since
 this role only handles [Sendy](http://sendy.co/?ref=6L8Qf) specific settings,
-it's up to you to install mysql (or MariaDB), PHP and either nginx or Apache.
+it's up to you to install mysql (or [MariaDB](https://github.com/nickjj/ansible-mariadb))
+, [PHP](https://github.com/nickjj/ansible-phpfpm) and either
+[nginx](https://github.com/nickjj/ansible-nginx) or Apache.
 
 Lucky for you I've already done that, so here's a fully working example.
 
