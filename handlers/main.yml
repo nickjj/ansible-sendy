@@ -1,0 +1,6 @@
+---
+
+- name: Restart php-fpm
+  service:
+    name: '{{ sendy_restart_fpm_service_name }}'
+    state: 'restarted'

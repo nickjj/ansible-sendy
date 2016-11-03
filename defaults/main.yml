@@ -1,0 +1,23 @@
+---
+
+sendy_install_url: ''
+
+sendy_db_setup_user: True
+sendy_db_name: 'sendy'
+sendy_db_host: 'localhost'
+sendy_db_port: 3306
+sendy_db_user: 'sendy'
+sendy_db_pass: 'pleasepickabetterpassword'
+sendy_db_permissions: '*.*:ALL'
+sendy_charset: 'utf8'
+sendy_cookie_domain: ''
+
+sendy_source_path: 'path/to/where/you/extracted/sendy/locally'
+sendy_destination_path: '/srv/sendy'
+sendy_copy_patched_geoip_for_nginx: True
+sendy_restart_fpm_service_name: 'php7.0-fpm'
+
+sendy_cron_scheduled: ['*/5', '*', '*', '*', '*']
+sendy_cron_autoresponders: ['*/1', '*', '*', '*', '*']
+
+sendy_force_sync: False

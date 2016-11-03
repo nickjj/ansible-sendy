@@ -1,0 +1,90 @@
+---
+
+- name: Create database
+  mysql_db:
+    name: '{{ sendy_db_name }}'
+    state: 'present'
+  when: sendy_db_setup_user
+
+- name: Create database user and permissions
+  mysql_user:
+    name: '{{ sendy_db_user }}'
+    password: '{{ sendy_db_pass }}'
+    priv: '{{ sendy_db_permissions }}'
+    host: '{{ sendy_db_host }}'
+    state: 'present'
+  when: sendy_db_setup_user
+
+- name: Ensure destination path exists
+  file:
+    path: '{{ sendy_destination_path }}'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
+- name: Detect if Sendy is installed
+  stat:
+    path: '{{ sendy_destination_path }}/includes/config.php'
+  register: sendy_register_installed
+
+- name: Sync Sendy to destination path
+  synchronize:
+    src: '{{ sendy_source_path }}'
+    dest: '{{ sendy_destination_path | dirname }}'
+    rsync_opts:
+      - '--no-o'
+      - '--no-g'
+      - '--chmod 0755'
+  when: not sendy_register_installed.stat.exists or sendy_force_sync
+  notify:
+    - 'Restart php-fpm'
+
+- name: Set upload folder to 777 permissions
+  file:
+    path: '{{ sendy_destination_path }}/uploads'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '0777'
+
+- name: Generate Sendy config file
+  template:
+    src: 'includes/config.php.j2'
+    dest: '{{ sendy_destination_path }}/includes/config.php'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify:
+    - 'Restart php-fpm'
+
+- name: Copy patched geoip.inc file for nginx
+  file:
+    src: 'includes/helpers/geo/geoip.inc'
+    dest: '{{ sendy_destination_path }}/includes/helpers/geo/geoip.inc'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  when: sendy_copy_patched_geoip_for_nginx
+  notify:
+    - 'Restart php-fpm'
+
+- name: Create crontab to handle scheduler
+  cron:
+    name: 'sendy scheduler'
+    job: 'php {{ sendy_destination_path }}/scheduled.php > /dev/null 2>&1'
+    minute: '{{ sendy_cron_scheduled[0] }}'
+    hour: '{{ sendy_cron_scheduled[1] }}'
+    day: '{{ sendy_cron_scheduled[2] }}'
+    weekday: '{{ sendy_cron_scheduled[3] }}'
+    month: '{{ sendy_cron_scheduled[4] }}'
+
+- name: Create crontab to handle autoresponders
+  cron:
+    name: 'sendy autoresponders'
+    job: 'php {{ sendy_destination_path }}/autoresponders.php > /dev/null 2>&1'
+    minute: '{{ sendy_cron_autoresponders[0] }}'
+    hour: '{{ sendy_cron_autoresponders[1] }}'
+    day: '{{ sendy_cron_autoresponders[2] }}'
+    weekday: '{{ sendy_cron_autoresponders[3] }}'
+    month: '{{ sendy_cron_autoresponders[4] }}'
